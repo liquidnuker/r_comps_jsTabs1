@@ -21,7 +21,7 @@ const jsTabs1 = {
       this.forEach(function (content, item) {
       content.addEventListener(event, func);
       });
-    }
+    };
 
     items.jsTabs1_EventListener("click", function (event) {
       let index = jsTabs1.indexFinder(event.target);
@@ -51,6 +51,6 @@ const jsTabs1 = {
     const jsonUrl = "js/ajax/" + item + ".json";
     document.getElementById("jsTabs1-01_content").innerHTML = jsonUrl;
   }
-}
+};
 
 jsTabs1.init(".jsTabs1-01 > li");
