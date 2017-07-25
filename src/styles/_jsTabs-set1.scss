@@ -1,0 +1,36 @@
+// 
+// ==================================================/
+body {
+  @extend %system_normal--400;
+}
+
+h1 {
+  display: none;
+}
+
+.item-id {
+  background-color: #ccc;
+}
+
+// jsTabs1-01
+// ==================================================/
+.jsTabs1-01 {
+  li {
+    @extend %display--inline-block;
+    @extend %padd--4;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  ~ .jsTabs1-01_panels {
+    @extend %padd--4;
+    margin-top: -1px;
+    border: 1px solid #000;
+  }
+}
+
+.jsTabs1-01--active {
+  background-color: #ccc;
+  border: 1px solid #000;
+  border-bottom-color: #fff;
+}
