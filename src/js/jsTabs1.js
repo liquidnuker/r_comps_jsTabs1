@@ -1,22 +1,14 @@
-const jsTabs1 = {
-  items: [],
-  activeTab: 0,
-  init: function(elmSel) {
-    this.items = document.querySelectorAll(elmSel);
-    this.loadTabContent("item1", 0);
-    this.addEvents();
-  },
-  indexFinder: function(value) {
-    let items = this.items;
-    for (var key = 0; key < items.length; key++) {
-      // if (items[key].property == value) {
-      if (items[key] == value) {
-        return key;
-      }
-    }
-  },
-  addEvents: function() {
-    let items = this.items;
+const jsTabs1 = (function () {
+  let items = [];
+  let activeTab = 0;
+
+  function init(selector) {
+    items = document.querySelectorAll(selector);
+    loadTabContent("item1", 0);
+    addEvents();
+  }
+
+  function addEvents() {
     NodeList.prototype.jsTabs1_EventListener = function (event, func) {
       this.forEach(function (content, item) {
       content.addEventListener(event, func);
@@ -24,15 +16,23 @@ const jsTabs1 = {
     };
 
     items.jsTabs1_EventListener("click", function (event) {
-      let index = jsTabs1.indexFinder(event.target);
-      jsTabs1.loadTabContent(event.target.innerHTML, index);
+      let index = indexFinder(event.target);
+      loadTabContent(event.target.innerHTML, index);
     });
-  },
-  setActiveTab: function(index) {
-    let activeItem = index;
-    let activeTab = this.activeTab;
-    let items = this.items;
+  }
 
+  function indexFinder(value) {
+    for (var key = 0; key < items.length; key++) {
+      // if (items[key].property == value) {
+      if (items[key] == value) {
+        return key;
+      }
+    }
+  }
+
+  function setActiveTab(index) {
+    let activeItem = index;
+    
     items[activeItem].className += " jsTabs1-01--active";
     items[activeItem].setAttribute("aria-selected", true);
 
@@ -42,15 +42,21 @@ const jsTabs1 = {
       items[activeTab].setAttribute("aria-selected", false);
 
       // set current activeTab
-      this.activeTab = activeItem;
+      activeTab = activeItem;
     }
-  },
-  loadTabContent: function(item, index) {
-    this.setActiveTab(index);
-  
+  }
+
+  function loadTabContent(item, index) {
+    setActiveTab(index);
+
     const jsonUrl = "js/ajax/" + item + ".json";
     document.getElementById("jsTabs1-01_content").innerHTML = jsonUrl;
   }
-};
 
-jsTabs1.init(".jsTabs1-01 > li");
+  return {
+    // public
+    init: init
+  };
+})();
+
+export {jsTabs1};
