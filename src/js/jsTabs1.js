@@ -1,62 +1,63 @@
-const jsTabs1 = (function () {
-  let items = [];
-  let activeTab = 0;
+class JsTabs1 {
+  constructor(opts) {
+    this.activeTab = opts.startTab;
+    this.tabItems = opts.tabItems;
+    this.startTab = opts.startTab;
 
-  function init(selector) {
-    items = document.querySelectorAll(selector);
-    loadTabContent("item1", 0);
-    addEvents();
+    this.activeTabClass = opts.activeTabClass;
+    this.normalTabClass = opts.normalTabClass;
+    this.tabContentHolder = opts.tabContentHolder;
   }
 
-  function addEvents() {
-    NodeList.prototype.jsTabs1_EventListener = function (event, func) {
-      this.forEach(function (content, item) {
-      content.addEventListener(event, func);
-      });
-    };
+  init() {
+    this.items = document.querySelectorAll(this.tabItems);
+    this.loadTabContent(this.items[this.startTab].innerHTML, this.startTab);
+    this.addEvents();
+  }
 
-    items.jsTabs1_EventListener("click", function (event) {
-      let index = indexFinder(event.target);
-      loadTabContent(event.target.innerHTML, index);
+  addEvents() {
+    let tabArr = Array.prototype.slice.call(this.items);
+
+    let self = this;
+    tabArr.forEach(function (i, index) {
+      i.addEventListener("click", function () {
+        self.loadTabContent(i.innerHTML, index);
+      });
     });
   }
 
-  function indexFinder(value) {
-    for (var key = 0; key < items.length; key++) {
-      // if (items[key].property == value) {
-      if (items[key] == value) {
-        return key;
-      }
-    }
-  }
-
-  function setActiveTab(index) {
+  setActiveTab(index) {
     let activeItem = index;
-    
-    items[activeItem].className += " jsTabs1-01--active";
+    let items = this.items;
+    let activeTab = this.activeTab;
+
+    items[activeItem].className += this.activeTabClass;
     items[activeItem].setAttribute("aria-selected", true);
 
     // remove activeTab
     if (activeTab !== activeItem) {
-      items[activeTab].className = "jsTabs1-01";
+      items[activeTab].className = this.normalTabClass;
       items[activeTab].setAttribute("aria-selected", false);
 
       // set current activeTab
-      activeTab = activeItem;
+      this.activeTab = activeItem;
     }
   }
 
-  function loadTabContent(item, index) {
-    setActiveTab(index);
-
+  // loadTabContent method#1
+  loadTabContent(item, index) {
+    this.setActiveTab(index);
     const jsonUrl = "js/ajax/" + item + ".json";
-    document.getElementById("jsTabs1-01_content").innerHTML = jsonUrl;
+    document.getElementById(this.tabContentHolder).textContent = jsonUrl;
   }
+}
 
-  return {
-    // public
-    init: init
-  };
-})();
+let JT1 = new JsTabs1({
+  tabItems: ".jsTabs1-01 > li",
+  startTab: 0, // default starting tab
+  activeTabClass: " jsTabs1-01--active",
+  normalTabClass: "jsTabs1-01",
+  tabContentHolder: "jsTabs1-01_content"
+});
 
-export {jsTabs1};
+JT1.init();
