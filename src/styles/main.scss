@@ -20,3 +20,16 @@
 // show col-* grid borders (_grid.scss)
 // ==================================================/
 @include col-grid-border(#000);
+
+// temp
+body {
+  @extend %system_normal--400;
+}
+
+h1 {
+  display: none;
+}
+
+.item-id {
+  background-color: #ccc;
+}
